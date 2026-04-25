@@ -84,13 +84,18 @@ router.get(
 
 router.get(
   '/google/callback',
-  passport.authenticate('google', { session: false, failureRedirect: '/login' }),
-  (req, res) => {
-    const { accessToken, refreshToken, user } = req.user;
-    setTokenCookie(res, refreshToken);
+  (req, res, next) => {
+    passport.authenticate('google', { session: false }, (err, data, info) => {
+      if (err) return next(err);
+      if (!data) {
+        return res.redirect(`${process.env.CLIENT_URL || 'http://localhost:5173'}/login?error=google_auth_failed`);
+      }
+      const { accessToken, refreshToken, user } = data;
+      setTokenCookie(res, refreshToken);
 
-    const redirectUrl = `${process.env.CLIENT_URL || 'http://localhost:5173'}/dashboard?token=${accessToken}`;
-    res.redirect(redirectUrl);
+      const redirectUrl = `${process.env.CLIENT_URL || 'http://localhost:5173'}/dashboard?token=${accessToken}`;
+      res.redirect(redirectUrl);
+    })(req, res, next);
   }
 );
 

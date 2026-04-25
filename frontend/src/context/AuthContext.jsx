@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, useContext } from 'react';
+import { createContext, useState, useEffect, useContext, useCallback } from 'react';
 import axios from 'axios';
 
 const AuthContext = createContext();
@@ -75,7 +75,7 @@ export const AuthProvider = ({ children }) => {
     return res.data;
   };
 
-  const loginWithToken = async (token) => {
+  const loginWithToken = useCallback(async (token) => {
     localStorage.setItem('token', token);
     try {
       const res = await api.get('/auth/me');
@@ -86,7 +86,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.removeItem('token');
       throw error;
     }
-  };
+  }, []);
 
   const register = async (name, email, password) => {
     const res = await api.post('/auth/register', { name, email, password });

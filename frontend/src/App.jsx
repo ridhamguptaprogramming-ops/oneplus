@@ -1,6 +1,6 @@
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Toaster } from 'react-hot-toast'
+import { Toaster, toast } from 'react-hot-toast'
 import { useEffect } from 'react'
 import { useAuth } from './context/AuthContext'
 import Navbar from './components/layout/Navbar'
@@ -48,8 +48,10 @@ function App() {
     const token = params.get('token')
     if (token) {
       loginWithToken(token).then(() => {
+        toast.success('Welcome back!')
         navigate(location.pathname, { replace: true })
       }).catch(() => {
+        toast.error('Google authentication failed')
         navigate('/login', { replace: true })
       })
     }

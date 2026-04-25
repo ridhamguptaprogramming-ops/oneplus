@@ -233,3 +233,27 @@ export default function Navbar() {
                   >
                     <HiLogout className="w-5 h-5" />
                     Logout
+                  </button>
+                </>
+              )}
+              {!isAuthenticated && (
+                <div className="pt-2 space-y-2">
+                  <Link
+                    to="/login"
+                    className="block w-full text-center px-4 py-3 rounded-xl text-sm font-medium border border-gray-200 dark:border-white/10"
+                  >
+                    Login
+                  </Link>
+                  <Link to="/register" className="block w-full btn-primary text-center text-sm">
+                    Get Started
+                  </Link>
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.nav>
+  )
+}
+

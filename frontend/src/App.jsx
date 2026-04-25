@@ -1,6 +1,8 @@
-import { Routes, Route, useLocation } from 'react-router-dom'
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Toaster } from 'react-hot-toast'
+import { useEffect } from 'react'
+import { useAuth } from './context/AuthContext'
 import Navbar from './components/layout/Navbar'
 import Footer from './components/layout/Footer'
 import Home from './pages/Home'
@@ -38,6 +40,20 @@ const AnimatedPage = ({ children }) => (
 
 function App() {
   const location = useLocation()
+  const navigate = useNavigate()
+  const { loginWithToken, isAuthenticated } = useAuth()
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search)
+    const token = params.get('token')
+    if (token) {
+      loginWithToken(token).then(() => {
+        navigate(location.pathname, { replace: true })
+      }).catch(() => {
+        navigate('/login', { replace: true })
+      })
+    }
+  }, [location.search, location.pathname, loginWithToken, navigate])
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-dark-950 text-gray-900 dark:text-gray-100 transition-colors duration-300">

@@ -7,6 +7,7 @@ const rateLimit = require('express-rate-limit');
 const cookieParser = require('cookie-parser');
 const http = require('http');
 const { Server } = require('socket.io');
+const passport = require('./config/passport');
 
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/errorHandler');
@@ -48,6 +49,7 @@ app.use(
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
+app.use(passport.initialize());
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { body } = require('express-validator');
+const passport = require('../config/passport');
 const {
   register,
   login,
@@ -14,6 +15,16 @@ const {
   devVerify,
 } = require('../controllers/authController');
 const { protect } = require('../middleware/auth');
+
+const setTokenCookie = (res, token) => {
+  const isProduction = process.env.NODE_ENV === 'production';
+  res.cookie('refreshToken', token, {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction ? 'none' : 'lax',
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  });
+};
 
 router.post(
   '/register',
@@ -61,6 +72,27 @@ router.post(
 
 // Dev-only: Auto-verify user without email (development only)
 router.post('/dev-verify', devVerify);
+
+// Google OAuth routes
+router.get(
+  '/google',
+  passport.authenticate('google', {
+    scope: ['profile', 'email'],
+    prompt: 'select_account',
+  })
+);
+
+router.get(
+  '/google/callback',
+  passport.authenticate('google', { session: false, failureRedirect: '/login' }),
+  (req, res) => {
+    const { accessToken, refreshToken, user } = req.user;
+    setTokenCookie(res, refreshToken);
+
+    const redirectUrl = `${process.env.CLIENT_URL || 'http://localhost:5173'}/dashboard?token=${accessToken}`;
+    res.redirect(redirectUrl);
+  }
+);
 
 module.exports = router;
 

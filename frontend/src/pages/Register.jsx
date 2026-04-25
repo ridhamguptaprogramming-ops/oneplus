@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useAuth } from '../context/AuthContext'
 import { HiUser, HiMail, HiLockClosed, HiEye, HiEyeOff, HiArrowRight } from 'react-icons/hi'
+import { FcGoogle } from 'react-icons/fc'
 import toast from 'react-hot-toast'
 
 export default function Register() {
@@ -145,6 +146,28 @@ export default function Register() {
               )}
             </button>
           </form>
+
+          <div className="mt-6">
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-200 dark:border-white/10" />
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-white/80 dark:bg-dark-900/80 text-gray-500 dark:text-gray-400">
+                  Or continue with
+                </span>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => window.location.href = '/api/auth/google'}
+              className="mt-4 w-full flex items-center justify-center gap-3 px-4 py-3 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 hover:bg-gray-50 dark:hover:bg-white/10 transition-all"
+            >
+              <FcGoogle className="w-5 h-5" />
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Sign up with Google</span>
+            </button>
+          </div>
 
           <p className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
             Already have an account?{' '}

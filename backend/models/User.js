@@ -22,9 +22,21 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: [true, 'Please provide a password'],
+      required: function () {
+        return this.authProvider === 'local';
+      },
       minlength: [8, 'Password must be at least 8 characters'],
       select: false,
+    },
+    googleId: {
+      type: String,
+      unique: true,
+      sparse: true,
+    },
+    authProvider: {
+      type: String,
+      enum: ['local', 'google'],
+      default: 'local',
     },
     avatar: {
       type: String,

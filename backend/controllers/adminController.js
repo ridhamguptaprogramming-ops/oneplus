@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const User = require('../models/User');
 const Event = require('../models/Event');
 const Registration = require('../models/Registration');
@@ -205,5 +206,4 @@ exports.getSystemHealth = async (req, res, next) => {
   }
 };
 
-const mongoose = require('mongoose');
 

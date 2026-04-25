@@ -14,7 +14,6 @@ import {
   HiCog,
   HiLogout,
   HiHome,
-  HiQrCode,
   HiPlus,
   HiShieldCheck,
 } from 'react-icons/hi'

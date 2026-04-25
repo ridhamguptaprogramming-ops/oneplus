@@ -11,6 +11,7 @@ const {
   forgotPassword,
   resetPassword,
   resendVerification,
+  devVerify,
 } = require('../controllers/authController');
 const { protect } = require('../middleware/auth');
 
@@ -57,6 +58,9 @@ router.post(
   ],
   resetPassword
 );
+
+// Dev-only: Auto-verify user without email (development only)
+router.post('/dev-verify', devVerify);
 
 module.exports = router;
 

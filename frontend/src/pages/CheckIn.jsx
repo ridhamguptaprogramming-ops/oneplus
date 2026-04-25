@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { Html5Qrcode } from 'html5-qrcode'
-import { HiQrCode, HiTicket, HiCheckCircle, HiXCircle } from 'react-icons/hi'
+import { HiTicket, HiCheckCircle, HiXCircle } from 'react-icons/hi'
 import { api } from '../context/AuthContext'
 import toast from 'react-hot-toast'
 
@@ -111,7 +111,7 @@ export default function CheckIn() {
                 onClick={startScanner}
                 className="inline-flex items-center gap-2 btn-primary"
               >
-                <HiQrCode className="w-5 h-5" /> Start QR Scanner
+                <HiTicket className="w-5 h-5" /> Start QR Scanner
               </button>
             )}
           </div>

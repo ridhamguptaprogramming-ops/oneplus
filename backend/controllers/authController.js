@@ -47,7 +47,13 @@ exports.register = async (req, res, next) => {
     await user.save({ validateBeforeSave: false });
 
     const verificationUrl = `${process.env.CLIENT_URL}/verify-email?token=${verificationToken}`;
-    await sendVerificationEmail(user, verificationUrl);
+
+    try {
+      await sendVerificationEmail(user, verificationUrl);
+    } catch (emailError) {
+      console.log('\n[DEV] Email verification URL:', verificationUrl);
+      console.log('[DEV] Set SKIP_EMAIL_VERIFICATION=true in .env to skip verification in development.\n');
+    }
 
     res.status(201).json({
       success: true,
@@ -139,7 +145,7 @@ exports.login = async (req, res, next) => {
       });
     }
 
-    if (!user.isEmailVerified) {
+    if (!user.isEmailVerified && process.env.SKIP_EMAIL_VERIFICATION !== 'true') {
       return res.status(403).json({
         success: false,
         message: 'Please verify your email before logging in',
@@ -328,11 +334,50 @@ exports.resendVerification = async (req, res, next) => {
     await user.save({ validateBeforeSave: false });
 
     const verificationUrl = `${process.env.CLIENT_URL}/verify-email?token=${verificationToken}`;
-    await sendVerificationEmail(user, verificationUrl);
+
+    try {
+      await sendVerificationEmail(user, verificationUrl);
+    } catch (emailError) {
+      console.log('\n[DEV] Verification URL:', verificationUrl);
+    }
 
     res.status(200).json({
       success: true,
       message: 'Verification email resent',
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Dev-only: Auto-verify user by email (for testing without SMTP)
+exports.devVerify = async (req, res, next) => {
+  try {
+    if (process.env.NODE_ENV === 'production') {
+      return res.status(403).json({
+        success: false,
+        message: 'This endpoint is not available in production',
+      });
+    }
+
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found',
+      });
+    }
+
+    user.isEmailVerified = true;
+    user.emailVerificationToken = undefined;
+    user.emailVerificationExpire = undefined;
+    await user.save({ validateBeforeSave: false });
+
+    res.status(200).json({
+      success: true,
+      message: `User ${email} has been auto-verified (dev mode)`,
     });
   } catch (error) {
     next(error);

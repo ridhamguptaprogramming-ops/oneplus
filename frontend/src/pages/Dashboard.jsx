@@ -6,7 +6,6 @@ import {
   HiTicket,
   HiChartBar,
   HiPlus,
-  HiQrCode,
   HiArrowRight,
   HiUsers,
 } from 'react-icons/hi'
@@ -56,7 +55,7 @@ export default function Dashboard() {
     ...(user?.role !== 'attendee'
       ? [
           { label: 'Create Event', href: '/dashboard/create-event', icon: HiPlus, color: 'bg-violet-500/10 text-violet-600' },
-          { label: 'Check In', href: '/dashboard/check-in', icon: HiQrCode, color: 'bg-amber-500/10 text-amber-600' },
+          { label: 'Check In', href: '/dashboard/check-in', icon: HiTicket, color: 'bg-amber-500/10 text-amber-600' },
         ]
       : []),
   ]

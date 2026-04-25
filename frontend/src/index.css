@@ -37,11 +37,29 @@
   }
 
   .btn-primary {
-    @apply relative overflow-hidden px-8 py-3.5 bg-gradient-to-r from-primary-600 to-primary-700 text-white font-semibold rounded-xl transition-all duration-300 hover:shadow-glow hover:scale-[1.02] active:scale-[0.98];
+    @apply relative overflow-hidden px-8 py-3.5 bg-gradient-to-r from-primary-600 to-primary-700 text-white font-semibold rounded-xl transition-all duration-300 hover:shadow-glow;
+    transform: scale(1);
+  }
+
+  .btn-primary:hover {
+    transform: scale(1.02);
+  }
+
+  .btn-primary:active {
+    transform: scale(0.98);
   }
 
   .btn-secondary {
-    @apply relative overflow-hidden px-8 py-3.5 bg-white/10 backdrop-blur-md border border-white/20 text-white font-semibold rounded-xl transition-all duration-300 hover:bg-white/20 hover:scale-[1.02] active:scale-[0.98];
+    @apply relative overflow-hidden px-8 py-3.5 bg-white/10 backdrop-blur-md border border-white/20 text-white font-semibold rounded-xl transition-all duration-300 hover:bg-white/20;
+    transform: scale(1);
+  }
+
+  .btn-secondary:hover {
+    transform: scale(1.02);
+  }
+
+  .btn-secondary:active {
+    transform: scale(0.98);
   }
 
   .gradient-text {
